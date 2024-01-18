@@ -39,6 +39,11 @@ io.on('connection', (socket) => {
         // Envia missatge a l'usuari amb id
         sockets[id].emit('connectar-amb-usuari', socket.id, data);
     });
+
+    socket.on('resposta-rebuda', (id, data) => {
+        // Envia resposta a l'usuari amb id
+        sockets[id].emit('resposta-rebuda', socket.id, data);
+    });
 });
 
 server.listen(port, () => {

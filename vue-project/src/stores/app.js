@@ -9,7 +9,8 @@ export const useAppStore = defineStore('app', {
       estat: false,
       socketId: '',
       data: {}
-    }
+    },
+    pagina: 'home',
   }),
 
   actions: {
@@ -22,6 +23,9 @@ export const useAppStore = defineStore('app', {
     getPeticiorebuda() {
       return this.peticioRebuda
     },
+    getPagina() {
+      return this.pagina
+    },
     setNom(nom) {
       this.nom = nom
     },
@@ -30,6 +34,9 @@ export const useAppStore = defineStore('app', {
     },
     setPeticioRebuda(peticioRebuda) {
       this.peticioRebuda = peticioRebuda
+    },
+    setPagina(pagina) {
+      this.pagina = pagina
     },
   },
 })

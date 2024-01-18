@@ -22,4 +22,13 @@ socket.on("connect", () => {
     });
   });
 
+  socket.on("resposta-rebuda", (socketId, data) => {
+    console.log(`Rebuda Resposta de Chat de Socket ${socketId}:`, data)
+    pinia.setPeticioRebuda({
+      estat: true,
+      socketId: socketId,
+      data: data
+    });
+  });
+
 });

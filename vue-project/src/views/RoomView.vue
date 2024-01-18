@@ -14,7 +14,7 @@
 import { useAppStore } from '../stores/app';
 import { socket } from '@/socket';
 import { watch } from 'vue';
-import { peer } from '@/communicationManager.js';
+// import { peer } from '@/communicationManager.js';
 
 export default {
 
