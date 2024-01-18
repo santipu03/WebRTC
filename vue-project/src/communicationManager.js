@@ -1,0 +1,1 @@
+export const peer = new SimplePeer({ initiator: true, trickle: false });
