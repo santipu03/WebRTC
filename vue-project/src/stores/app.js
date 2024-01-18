@@ -5,6 +5,11 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     usuaris: [],
     nom: '',
+    peticioRebuda: {
+      estat: false,
+      socketId: '',
+      data: {}
+    }
   }),
 
   actions: {
@@ -14,11 +19,17 @@ export const useAppStore = defineStore('app', {
     getNom() {
       return this.nom
     },
+    getPeticiorebuda() {
+      return this.peticioRebuda
+    },
     setNom(nom) {
       this.nom = nom
     },
     setUsuaris(usuaris) {
       this.usuaris = usuaris
-    }
+    },
+    setPeticioRebuda(peticioRebuda) {
+      this.peticioRebuda = peticioRebuda
+    },
   },
 })

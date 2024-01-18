@@ -13,9 +13,13 @@ socket.on("connect", () => {
     pinia.setUsuaris(usuaris);
   })
 
-  socket.on("connectar-amb-usuari", (data) => {
-    pinia.setNom(data.nom);
-    router.push({ name: "Chat" });
+  socket.on("connectar-amb-usuari", (socketId, data) => {
+    console.log(`Rebuda Petició de Chat de Socket ${socketId}:`, data)
+    pinia.setPeticioRebuda({
+      estat: true,
+      socketId: socketId,
+      data: data
+    });
   });
 
 });

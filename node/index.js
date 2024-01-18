@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
         usuaris = usuaris.filter(p => p.id !== socket.id);
         delete sockets[socket.id];
+        io.emit('actualitzar-usuaris', usuaris);
         console.log(usuaris);
     });
 

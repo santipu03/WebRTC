@@ -29,7 +29,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 .form {
   display: flex;

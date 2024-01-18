@@ -3,8 +3,8 @@
         <h1>Room</h1>
         <h3>List of people: </h3>
         <div v-for="usuari in totalUsuaris" class="usuari">
-            <p v-if="usuari.nom === nom" class="nom-propi">{{ usuari.nom }}</p>
-            <p v-else>{{ usuari.nom }}</p>
+            <p v-if="usuari.nom === nom" class="nom nom-propi">{{ usuari.nom }}</p>
+            <p v-else class="nom">{{ usuari.nom }}</p>
             <button v-if="usuari.nom !== nom" @click="connectarAmbUsuari(usuari.id)">Connectar</button>
         </div>
     </div>
@@ -13,13 +13,14 @@
 <script>
 import { useAppStore } from '../stores/app';
 import { socket } from '@/socket';
-// import { peer } from '@/communicationManager.js';
+import { watch } from 'vue';
+import { peer } from '@/communicationManager.js';
 
 export default {
 
     data() {
         return {
-            store: useAppStore()
+            store: useAppStore(),
         }
     },
 
@@ -29,12 +30,22 @@ export default {
         },
         nom() {
             return this.store.getNom();
-        }
+        },
+    },
+
+    created() {
+        watch(
+            () => this.store.peticioRebuda,
+            (newVal, oldVal) => {
+                console.log("Peticio rebuda: ", newVal, oldVal)
+                peer.signal(newVal.data)
+            }
+        );
     },
 
     methods: {
         connectarAmbUsuari(id) {
-            const peer = new SimplePeer({ initiator: true })
+            // peer = new SimplePeer({ initiator: true })
             console.log("Peer creat: ", peer)
             console.log("Connectant amb usuari: ", id);
 
@@ -64,17 +75,28 @@ export default {
   
 <style scoped>
 .room {
-    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .usuari {
     display: flex;
     width: 200px;
+    border: 2px solid grey;
+    padding: 15px;
+    border-radius: 8px;
     justify-content: space-between;
 }
 
+.nom {
+    font-size: 1.2rem;
+}
+
 .nom-propi {
-    color: darkblue;
+    color: darkgreen;
 }
 </style>
   
