@@ -10,6 +10,11 @@ export const useAppStore = defineStore('app', {
       socketId: '',
       data: {}
     },
+    respostaRebuda: {
+      estat: false,
+      socketId: '',
+      data: {}
+    },
     pagina: 'home',
   }),
 
@@ -22,6 +27,9 @@ export const useAppStore = defineStore('app', {
     },
     getPeticiorebuda() {
       return this.peticioRebuda
+    },
+    getRespostaRebuda() {
+      return this.respostaRebuda
     },
     getPagina() {
       return this.pagina
@@ -37,6 +45,9 @@ export const useAppStore = defineStore('app', {
     },
     setPagina(pagina) {
       this.pagina = pagina
+    },
+    setRespostaRebuda(respostaRebuda) {
+      this.respostaRebuda = respostaRebuda
     },
   },
 })

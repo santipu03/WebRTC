@@ -13,7 +13,7 @@
       <p v-if="usuari.nom === nom" class="nom nom-propi">{{ usuari.nom }}</p>
       <p v-else class="nom">{{ usuari.nom }}</p>
       <button v-if="usuari.nom !== nom" @click="connectarAmbUsuari(usuari.id)">Connectar</button>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -53,11 +53,25 @@ export default {
         console.log("Peer: ", this.peer)
         this.peer.signal(newVal.data)
         this.peer.on('signal', data => {
-          console.log("Answer received: ", data)
           if (data.type === 'answer') {
+            console.log("S'ha generat i enviat la resposta: ", data)
             socket.emit('resposta-rebuda', newVal.socketId, data);
           }
         });
+      }
+    );
+    watch(
+      () => this.store.respostaRebuda,
+      (newVal, oldVal) => {
+        console.log("Ara s'establirà la connexió: ")
+        // Cuando se recibe una respuesta, se establece la conexión
+        this.peer.signal(newVal.data)
+
+        this.peer.on('connect', () => {
+          console.log('CONNECT')
+          this.peer.send('whatever' + Math.random())
+          // p.send('whatever' + Math.random())
+        })
       }
     );
   },
@@ -76,8 +90,8 @@ export default {
 
       this.peer.on('signal', data => {
         // Aqui se envía el signal al servidor
-        console.log("Signal received: ", data)
         if (data.type === 'offer') {
+          console.log("S'ha generat i enviat la oferta de Chat: ", data)
           socket.emit('peticio-enviada', id, data);
         }
       });
