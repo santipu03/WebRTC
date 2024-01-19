@@ -13,13 +13,13 @@
       <p v-if="usuari.nom === nom" class="nom nom-propi">{{ usuari.nom }}</p>
       <p v-else class="nom">{{ usuari.nom }}</p>
       <button v-if="usuari.nom !== nom" @click="connectarAmbUsuari(usuari.id)">Connectar</button>
-    </div> 
+    </div>
   </div>
 </template>
 
 
 <script>
-import { newInitiatorPeer, newNonInitiatorPeer, getPeer, setOfferSignal, setAnswerSignal, setConnectionEstablished } from '@/communicationManager.js';
+import { communicationManager } from '@/communicationManager.js';
 import { useAppStore } from '@/stores/app';
 import { socket } from '@/socket';
 import { watch } from 'vue';
@@ -49,10 +49,10 @@ export default {
       (newVal, oldVal) => {
         // Cuando se recibe una petición, se crea un peer como no iniciador
         // Se genera una señal de respuesta que se envía al servidor
-        let peer = newNonInitiatorPeer();
+        let peer = communicationManager.newNonInitiatorPeer();
         console.log("Peer: ", peer)
         peer.signal(newVal.data)
-        setAnswerSignal(newVal.socketId);
+        communicationManager.setAnswerSignal(newVal.socketId);
       }
     );
     watch(
@@ -60,9 +60,9 @@ export default {
       (newVal, oldVal) => {
         console.log("Ara s'establirà la connexió: ")
         // Cuando se recibe una respuesta, se establece la conexión
-        let peer = getPeer();
+        let peer = communicationManager.getPeer();
         peer.signal(newVal.data)
-        setConnectionEstablished();
+        communicationManager.setConnectionEstablished();
       }
     );
   },
@@ -76,9 +76,9 @@ export default {
     connectarAmbUsuari(id) {
       // Cuando se quiere conectar con un usuario, se crea un peer como iniciador
       // Al ser iniciador, se genera un signal que se envía al servidor
-      let peer = newInitiatorPeer();
+      let peer = communicationManager.newInitiatorPeer();
       console.log("Connectant amb usuari: ", id);
-      setOfferSignal(id);
+      communicationManager.setOfferSignal(id);
     }
   }
 }

@@ -45,7 +45,15 @@ function setConnectionEstablished() {
     peer.on('data', data => {
         console.log('data: ' + data)
     })
-
 }
 
-export { getPeer, newInitiatorPeer, newNonInitiatorPeer, setAnswerSignal, setOfferSignal, setConnectionEstablished };
+const communicationManager = {
+    newInitiatorPeer,
+    newNonInitiatorPeer,
+    getPeer,
+    setAnswerSignal,
+    setOfferSignal,
+    setConnectionEstablished
+}
+
+export { communicationManager };
