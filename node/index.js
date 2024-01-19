@@ -35,9 +35,9 @@ io.on('connection', (socket) => {
         console.log(usuaris);
     });
 
-    socket.on('connectar-amb-usuari', (id, data) => {
-        // Envia missatge a l'usuari amb id
-        sockets[id].emit('connectar-amb-usuari', socket.id, data);
+    socket.on('peticio-enviada', (id, data) => {
+        // Rep peticio de chat de l'usuari 'socket.id' cap a l'usuari amb 'id'
+        sockets[id].emit('peticio-enviada', socket.id, data);
     });
 
     socket.on('resposta-rebuda', (id, data) => {
