@@ -19,7 +19,7 @@
 
 
 <script>
-// import { peer } from '@/communicationManager.js';
+import { newInitiatorPeer, newNonInitiatorPeer, getPeer, setOfferSignal, setAnswerSignal, setConnectionEstablished } from '@/communicationManager.js';
 import { useAppStore } from '@/stores/app';
 import { socket } from '@/socket';
 import { watch } from 'vue';
@@ -49,15 +49,10 @@ export default {
       (newVal, oldVal) => {
         // Cuando se recibe una petición, se crea un peer como no iniciador
         // Se genera una señal de respuesta que se envía al servidor
-        this.peer = new SimplePeer({ initiator: false })
-        console.log("Peer: ", this.peer)
-        this.peer.signal(newVal.data)
-        this.peer.on('signal', data => {
-          if (data.type === 'answer') {
-            console.log("S'ha generat i enviat la resposta: ", data)
-            socket.emit('resposta-rebuda', newVal.socketId, data);
-          }
-        });
+        let peer = newNonInitiatorPeer();
+        console.log("Peer: ", peer)
+        peer.signal(newVal.data)
+        setAnswerSignal(newVal.socketId);
       }
     );
     watch(
@@ -65,13 +60,9 @@ export default {
       (newVal, oldVal) => {
         console.log("Ara s'establirà la connexió: ")
         // Cuando se recibe una respuesta, se establece la conexión
-        this.peer.signal(newVal.data)
-
-        this.peer.on('connect', () => {
-          console.log('CONNECT')
-          this.peer.send('whatever' + Math.random())
-          // p.send('whatever' + Math.random())
-        })
+        let peer = getPeer();
+        peer.signal(newVal.data)
+        setConnectionEstablished();
       }
     );
   },
@@ -85,30 +76,10 @@ export default {
     connectarAmbUsuari(id) {
       // Cuando se quiere conectar con un usuario, se crea un peer como iniciador
       // Al ser iniciador, se genera un signal que se envía al servidor
-      this.peer = new SimplePeer({ initiator: true })
+      let peer = newInitiatorPeer();
       console.log("Connectant amb usuari: ", id);
-
-      this.peer.on('signal', data => {
-        // Aqui se envía el signal al servidor
-        if (data.type === 'offer') {
-          console.log("S'ha generat i enviat la oferta de Chat: ", data)
-          socket.emit('peticio-enviada', id, data);
-        }
-      });
-
-      this.peer.on('error', err => console.error(err));
-
-      this.peer.on('connect', () => {
-        console.log('CONNECT')
-        p.send('whatever' + Math.random())
-      })
-
-      this.peer.on('data', data => {
-        console.log('data: ' + data)
-      })
-
+      setOfferSignal(id);
     }
-
   }
 }
 </script>
