@@ -16,6 +16,7 @@ export const useAppStore = defineStore('app', {
       data: {}
     },
     pagina: 'home',
+    connectat: false
   }),
 
   actions: {
@@ -34,6 +35,9 @@ export const useAppStore = defineStore('app', {
     getPagina() {
       return this.pagina
     },
+    getConnectat() {
+      return this.connectat
+    },  
     setNom(nom) {
       this.nom = nom
     },
@@ -48,6 +52,9 @@ export const useAppStore = defineStore('app', {
     },
     setRespostaRebuda(respostaRebuda) {
       this.respostaRebuda = respostaRebuda
+    },
+    setConnectat(connectat) {
+      this.connectat = connectat
     },
   },
 })

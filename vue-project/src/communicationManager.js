@@ -1,4 +1,6 @@
 import { socket } from '@/socket';
+import router from '@/router';
+import { useAppStore } from '@/stores/app';
 
 let peer;
 
@@ -40,11 +42,10 @@ function setAnswerSignal(id) {
 function setConnectionEstablished() {
     peer.on('connect', () => {
         console.log("S'ha establert la connexió amb l'altre usuari");
-        peer.send('whatever' + Math.random())
+        const store = useAppStore();
+        store.setConnectat(true);
+        router.push({ name: 'chat' });
     });
-    peer.on('data', data => {
-        console.log('data: ' + data)
-    })
 }
 
 const communicationManager = {
